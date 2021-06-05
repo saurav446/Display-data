@@ -19,7 +19,10 @@ const Submit = () => {
      } 
      setInput([...inputs,newTodo])
      e.preventDefault(); 
-     e.target.reset()
+     e.target.reset();
+     setName('')
+     setNumber('')
+     setEmail('')
    }
    const deletes = (id) =>{
      const setDelete =  inputs.filter((pd) => pd.id === id)
@@ -36,7 +39,7 @@ const Submit = () => {
 
    
    useEffect(() =>{
-    const setZ = JSON.stringify(id)
+    const setZ = JSON.stringify(inputs)
     localStorage.setItem('inputs',setZ)
   },[inputs])
 
@@ -55,17 +58,18 @@ const Submit = () => {
         
         <div className="mt-5" style={{textAlign:'left'}}>
         <div><h1>User List :{inputs.length}</h1></div>
+        <Button onClick={(id) => deletes( id)}>Delete ALL User</Button>
+
         
        {
          inputs.map((pd) =>{
            return (
-             <>
+             <div>
              <p className="mt-2">User Details</p>
            <h2>Name:{pd.Name}</h2>
            <h2>Email:{pd.Email}</h2>
            <h2>Number:{pd.Number}</h2> 
-           <Button onClick={deletes}>Delete</Button>
-           </>
+           </div>
            ) 
          })
        }
