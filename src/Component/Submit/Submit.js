@@ -62,13 +62,13 @@ const Submit = () => {
 
         
        {
-         inputs.map((pd) =>{
+         inputs.map((pd,index) =>{
            return (
              <div>
-             <p className="mt-2">User Details</p>
-           <h2>Name:{pd.Name}</h2>
-           <h2>Email:{pd.Email}</h2>
-           <h2>Number:{pd.Number}</h2> 
+             <h5 className="mt-2">User No:{index + 1}</h5>
+             <h2>Name:{pd.Name}</h2>
+             <h2>Email:{pd.Email}</h2>
+             <h2>Number:{pd.Number}</h2> 
            </div>
            ) 
          })
