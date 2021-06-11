@@ -8,7 +8,7 @@ const Submit = () => {
   const [name,setName] =  useState('')  
   const [number,setNumber] =  useState('')
   const [email,setEmail] =  useState('')
-  
+   
     
    const listOfItem = (e) =>{  
      const newTodo ={
@@ -24,9 +24,10 @@ const Submit = () => {
      setNumber('')
      setEmail('')
    }
-   const deletes = (id) =>{
-     const setDelete =  inputs.filter((pd) => pd.id === id)
-     setInput(setDelete)
+   const deletes = (index) =>{
+     const newList = inputs;
+     newList.splice(index,1);
+     setInput([...inputs])
    }
    useEffect(() =>{
      const getZ = localStorage.getItem('inputs')
@@ -58,7 +59,7 @@ const Submit = () => {
         
         <div className="mt-5" style={{textAlign:'left'}}>
         <div><h1>User List :{inputs.length}</h1></div>
-        <Button onClick={(id) => deletes( id)}>Delete ALL User</Button>
+        
 
         
        {
@@ -69,6 +70,7 @@ const Submit = () => {
              <h2>Name:{pd.Name}</h2>
              <h2>Email:{pd.Email}</h2>
              <h2>Number:{pd.Number}</h2> 
+             <Button onClick={() => deletes( index)}>Delete User</Button>
            </div>
            ) 
          })
