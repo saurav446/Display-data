@@ -1,28 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Container, Form } from 'react-bootstrap';
+import { Button, Container,Form } from 'react-bootstrap';
+import { useForm } from "react-hook-form";
 
 
 const Submit = () => {
+  const { register, handleSubmit, formState: { errors } } = useForm();
   
   const [inputs,setInput]  =  useState([]);   
   const [name,setName] =  useState('')  
   const [number,setNumber] =  useState('')
   const [email,setEmail] =  useState('')
-   
     
-   const listOfItem = (e) =>{  
+   const onSubmit = (e) =>{  
+     
      const newTodo ={
        id: new Date().getTime(),
        Name:name,
        Email:email,
        Number:number
      } 
-     setInput([...inputs,newTodo])
-     e.preventDefault(); 
-     e.target.reset();
+     setInput([...inputs,newTodo]) 
      setName('')
-     setNumber('')
      setEmail('')
+     setNumber('')
    }
    const deletes = (index) =>{
      const newList = inputs;
@@ -49,27 +49,49 @@ const Submit = () => {
           <Container >
             <div className="submit ">
               <h2>User Input</h2>
-            <Form    onSubmit={listOfItem} >
-                <Form.Control  className="w-50 mt-4" value={name} onChange={(e) =>{setName(e.target.value)}} name="name"  type="text" placeholder="Name" required />
-                 <Form.Control className="w-50 mt-4" value={email} onChange={(e) =>{setEmail(e.target.value)}} type="name" placeholder="Email" required />
-                <Form.Control value={number} onChange={(e) =>{setNumber(e.target.value)}}  className="w-50 mt-4" name="number"  type="text" placeholder="Phone Number" required /> 
-                <Form.Control  className="w-50 mt-4 btn-primary"   type="Submit" value="Submit" required /> 
-            </Form>
+              <form    onSubmit={handleSubmit(onSubmit)}>
+                
+              <input
+              {...register("names", { required: true,minLength: 5 })} 
+              value={name}
+              onChange={(e) =>{setName(e.target.value)}} 
+                type="text" placeholder="Name"  
+                required
+                /><br /> 
+            {errors.names && <p className="red">This name minLength 5 character</p>}
+
+              <input value={email}
+              
+              {...register("emails", { required: true, })} 
+              className="mt-1"
+              onChange={(e) =>{setEmail(e.target.value)}} type="email"
+               placeholder="Email"  /><br />
+              
+            {errors.emails && <p className="red">This email </p>}
+              <input
+              {...register("numbers", { required: true,maxLength: 11,minLength: 11 })} 
+              value={number} onChange={(e) =>{setNumber(e.target.value)}} 
+               className="mt-1"  type="number" placeholder="Phone Number"
+              /><br />
+              
+            {errors.numbers && <p className="red">This number length 11 character </p>}
+              
+              <input className="mt-1" type="submit" />
+            </form>
+  
           </div>
         
-        <div className="mt-5" style={{textAlign:'left'}}>
-        <div><h1>User List :{inputs.length}</h1></div>
-        
-
+        <div className="mt-3" style={{textAlign:'left'}}>
+        <div><h3>User List :{inputs.length}</h3></div>
         
        {
          inputs.map((pd,index) =>{
            return (
              <div>
              <h5 className="mt-2">User No:{index + 1}</h5>
-             <h2>Name:{pd.Name}</h2>
-             <h2>Email:{pd.Email}</h2>
-             <h2>Number:{pd.Number}</h2> 
+             <h4>Name:{pd.Name}</h4>
+             <h4>Email:{pd.Email}</h4>
+             <h4>Number:{pd.Number}</h4> 
              <Button onClick={() => deletes( index)}>Delete User</Button>
            </div>
            ) 
