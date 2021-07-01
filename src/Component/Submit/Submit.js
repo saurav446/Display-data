@@ -29,6 +29,12 @@ const Submit = () => {
      newList.splice(index,1);
      setInput([...inputs])
    }
+
+   const heandleEdit = (id) =>{
+     const editTodo = inputs.find((pd) => pd.id === id)
+     setName(editTodo.name)
+   }
+
    useEffect(() =>{
      const getZ = localStorage.getItem('inputs')
      const AllSet = JSON.parse(getZ) 
@@ -60,7 +66,7 @@ const Submit = () => {
                 /><br /> 
             {errors.names && <p className="red">This name minLength 5 character</p>}
 
-              <input value={email}
+               <input value={email}
               
               {...register("emails", { required: true, })} 
               className="mt-1"
@@ -87,12 +93,13 @@ const Submit = () => {
        {
          inputs.map((pd,index) =>{
            return (
-             <div>
+             <div key={pd.id}>
              <h5 className="mt-2">User No:{index + 1}</h5>
              <h4>Name:{pd.Name}</h4>
              <h4>Email:{pd.Email}</h4>
              <h4>Number:{pd.Number}</h4> 
-             <Button onClick={() => deletes( index)}>Delete User</Button>
+             <Button  onClick={() => deletes( index)}>Delete User</Button>
+             <Button onClick={() => heandleEdit(index) } style={{marginLeft:'2rem'}}>Edit User</Button>
            </div>
            ) 
          })
