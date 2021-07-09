@@ -5,7 +5,7 @@ const Objects = () => {
         {name:'' ,names:'',namez:''}
       );
       const [user,setUser] = useState([])
-      const {name,names,namez} = input;
+      const {names,name,namez} = input;
     
       const ChangeInput = (e) =>{
           setInput({...input,[e.target.name]:e.target.value})

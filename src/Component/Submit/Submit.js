@@ -12,7 +12,7 @@ const Submit = () => {
   const [email,setEmail] =  useState('')
     
    const onSubmit = (e) =>{  
-     
+      
      const newTodo ={
        id: new Date().getTime(),
        Name:name,
