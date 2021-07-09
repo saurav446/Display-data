@@ -4,51 +4,47 @@ import { useForm } from "react-hook-form";
 
 
 const Submit = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit,reset, formState: { errors } } = useForm();
   
-  const [inputs,setInput]  =  useState([]);   
-  const [name,setName] =  useState('')  
-  const [number,setNumber] =  useState('')
-  const [email,setEmail] =  useState('')
+
+  const init = {
+        Name:'',
+       Email:'',
+       Number:''
+  }
+  const [inputs,setInput]  =  useState(init); 
+  const [value,setValue] = useState([])
     
-   const onSubmit = (e) =>{  
-      
-     const newTodo ={
-       id: new Date().getTime(),
-       Name:name,
-       Email:email,
-       Number:number
-     } 
-     setInput([...inputs,newTodo]) 
-     setName('')
-     setEmail('')
-     setNumber('')
-   }
+
+    const {names,email,number} = inputs;
+       const hendlChange = (e) =>{
+          setInput({...inputs,[e.target.name]:e.target.value})
+        }
+      const onSubmit = () =>{   
+        reset()
+        setValue([...value,inputs])  
+      }
    const deletes = (index) =>{
-     const newList = inputs;
+     const newList = value;
      newList.splice(index,1);
-     setInput([...inputs])
+     setValue([...value])
    }
 
-   const heandleEdit = (id) =>{
-     const editTodo = inputs.find((pd) => pd.id === id)
-     setName(editTodo.name)
-   }
-
+   
    useEffect(() =>{
-     const getZ = localStorage.getItem('inputs')
+     const getZ = localStorage.getItem('value')
      const AllSet = JSON.parse(getZ) 
      if(AllSet){
-      setInput(AllSet)
+      setValue(AllSet)
      }
      
    },[])
 
    
    useEffect(() =>{
-    const setZ = JSON.stringify(inputs)
-    localStorage.setItem('inputs',setZ)
-  },[inputs])
+    const setZ = JSON.stringify(value)
+    localStorage.setItem('value',setZ)
+  },[value])
 
     return (
         <div>
@@ -59,25 +55,25 @@ const Submit = () => {
                 
               <input
               {...register("names", { required: true,minLength: 5 })} 
-              value={name}
-              onChange={(e) =>{setName(e.target.value)}} 
+              value={names} name="names"
+              onChange={(e) =>{hendlChange(e)}} 
                 type="text" placeholder="Name"  
                 required
                 /><br /> 
             {errors.names && <p className="red">This name minLength 5 character</p>}
 
                <input value={email}
-              
-              {...register("emails", { required: true, })} 
+              name="email"
+              {...register("email", { required: true, })} 
               className="mt-1"
-              onChange={(e) =>{setEmail(e.target.value)}} type="email"
+              onChange={(e) =>{hendlChange(e)}} type="email"
                placeholder="Email"  /><br />
               
-            {errors.emails && <p className="red">This email </p>}
+            {errors.email && <p className="red">This email </p>}
               <input
               {...register("numbers", { required: true,maxLength: 11,minLength: 11 })} 
-              value={number} onChange={(e) =>{setNumber(e.target.value)}} 
-               className="mt-1"  type="number" placeholder="Phone Number"
+              value={number} onChange={(e) =>{hendlChange(e)}} 
+               className="mt-1"  type="number" placeholder="Phone Number" name="number"
               /><br />
               
             {errors.numbers && <p className="red">This number length 11 character </p>}
@@ -88,10 +84,10 @@ const Submit = () => {
           </div>
         
         <div className="mt-3" style={{textAlign:'left'}}>
-        <div><h3>User List :{inputs.length}</h3></div>
+        <div><h3>User List :{value.length}</h3></div>
         
        {
-         inputs.map((pd,index) =>{
+         value.map((pd,index) =>{
            return (
              <div key={pd.id}>
              <h5 className="mt-2">User No:{index + 1}</h5>
